@@ -16,5 +16,15 @@ namespace Restaurant.Models.BusinessLogicLayer
         {
             return dishDAL.GetDishesByCategory(categoryName);
         }
+
+        public List<Dish> SearchDishesByName(string keyword,bool include)
+        {
+            return dishDAL.SearchByName(keyword,include);
+        }
+
+        public List<Dish> SearchDishesByAllergen(string keyword, bool include)
+        {
+            return dishDAL.SearchByAllergen(keyword, include);
+        }
     }
 }

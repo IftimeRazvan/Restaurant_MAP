@@ -19,6 +19,10 @@ namespace Restaurant.ViewModels
         private ObservableCollection<Menu> allMenus = new ObservableCollection<Menu>();
         private ObservableCollection<Category> categories = new ObservableCollection<Category>();
         private Category selectedCategory;
+        private string searchQuery;
+        private string allergenQuery;
+        private bool includeSearchTerm = false;
+        private bool includeAllergen = false;
 
         public ObservableCollection<Dish> AllDishes
         {
@@ -27,6 +31,48 @@ namespace Restaurant.ViewModels
             {
                 allDishes = value;
                 NotifyPropertyChanged();
+            }
+        }
+
+        public bool IncludeSearchTerm
+        {
+            get => includeSearchTerm;
+            set
+            {
+                includeSearchTerm = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool IncludeAllergen
+        {
+            get => includeAllergen;
+            set
+            {
+                includeAllergen = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string SearchQuery
+        {
+            get => searchQuery;
+            set
+            {
+                searchQuery = value;
+                NotifyPropertyChanged();
+                LoadDishesAndMenusBySearchName();
+            }
+        }
+
+        public string AllergenQuery
+        {
+            get => allergenQuery;
+            set
+            {
+                allergenQuery = value;
+                NotifyPropertyChanged();
+                LoadDishesAndMenusBySearchAllergen();
             }
         }
 
@@ -57,7 +103,7 @@ namespace Restaurant.ViewModels
             {
                 selectedCategory = value;
                 NotifyPropertyChanged();
-                LoadDishesBySelectedCategory();
+                LoadDishesAndMenusBySelectedCategory();
             }
         }
 
@@ -72,7 +118,7 @@ namespace Restaurant.ViewModels
             Categories = new ObservableCollection<Category>(rawCategories);
         }
 
-        private void LoadDishesBySelectedCategory()
+        private void LoadDishesAndMenusBySelectedCategory()
         {
             if (SelectedCategory == null) return;
 
@@ -81,6 +127,28 @@ namespace Restaurant.ViewModels
 
             var filteredMenus = menuBL.GetMenusByCategory(SelectedCategory.Name);
             AllMenus = new ObservableCollection<Menu>(filteredMenus);
+
+        }
+
+        private void LoadDishesAndMenusBySearchName() 
+        {
+
+            var filteredDishes = dishBL.SearchDishesByName(SearchQuery,IncludeSearchTerm);
+            AllDishes = new ObservableCollection<Dish>(filteredDishes);
+
+            var filteredMenus = menuBL.SearchMenusByName(SearchQuery, IncludeSearchTerm);
+            AllMenus = new ObservableCollection<Menu>(filteredMenus);
+        }
+
+        private void LoadDishesAndMenusBySearchAllergen()
+        {
+
+            var filteredDishes = dishBL.SearchDishesByAllergen(AllergenQuery,IncludeAllergen);
+            AllDishes = new ObservableCollection<Dish>(filteredDishes);
+
+            var filteredMenus = menuBL.SearchMenusByAllergen(AllergenQuery, IncludeAllergen);
+            AllMenus = new ObservableCollection<Menu>(filteredMenus);
+
 
         }
     }

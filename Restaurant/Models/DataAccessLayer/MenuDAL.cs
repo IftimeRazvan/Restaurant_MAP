@@ -130,7 +130,6 @@ namespace Restaurant.Models.DataAccessLayer
                 conn.Close();
 
             }
-
             return menus;
         }
 
@@ -140,7 +139,7 @@ namespace Restaurant.Models.DataAccessLayer
 
             using (SqlConnection conn = DALHelper.Connection)
             {
-                SqlCommand cmd = new SqlCommand("SearchMenusByName", conn);
+                SqlCommand cmd = new SqlCommand("SearchMenusByAllergen", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter param1 = new SqlParameter("@Keyword", SqlDbType.NVarChar, 100);
@@ -170,40 +169,10 @@ namespace Restaurant.Models.DataAccessLayer
                     menus.Add(menu);
                 }
 
-                reader.NextResult();
-
-                while (reader.Read())
-                {
-                    var menuItemId = (int)reader["MenuItemId"];
-                    var menuId = (int?)reader["MenuId"];
-                    var dishId = (int?)reader["DishId"];
-                    var quantity = (decimal)reader["Quantity"];
-
-                    var menu = menus.FirstOrDefault(m => m.MenuID == menuId);
-                    if (menu != null)
-                    {
-                        menu.Items.Add(new MenuItem
-                        {
-                            MenuItemID = menuItemId,
-                            MenuID = menuId,
-                            DishID = dishId,
-                            Dish = new Dish
-                            {
-                                Name = reader["Name"].ToString(),
-                                Price = (decimal)reader["Price"],
-                                QuantityPerPortion = quantity
-                            }
-                        });
-                    }
-                }
-
                 conn.Close();
-
             }
 
             return menus;
         }
-
-
     }
 }

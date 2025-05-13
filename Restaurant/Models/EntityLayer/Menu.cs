@@ -93,6 +93,8 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
+        public string AllergensString => string.Join(", ", Allergens);
+
         public bool IsAvailable
         {
             get
