@@ -26,5 +26,10 @@ namespace Restaurant.Models.BusinessLogicLayer
         {
             return dishDAL.SearchByAllergen(keyword, include);
         }
+
+        public List<Dish> GetAllDishes()
+        {
+            return dishDAL.GetAllDishes();
+        }
     }
 }

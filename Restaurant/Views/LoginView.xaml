@@ -1,0 +1,159 @@
+﻿<Window x:Class="Restaurant.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Restaurant.Converters"
+        Title="Autentificare - Restaurant" Height="700" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <local:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <!-- Container principal -->
+        <StackPanel Orientation="Vertical" Margin="10">
+
+            <!-- Titlu -->
+            <TextBlock Text="Bine ai venit!" 
+                       FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="Autentifică-te sau creează un cont nou." 
+                       FontSize="14" Foreground="Gray" HorizontalAlignment="Center"/>
+
+            <!-- Email cu placeholder -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Email:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="EmailTextBox"
+                         Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Adresa de email"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Parola cu placeholder -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Parolă:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="PasswordBox"
+                         Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Parolă"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Buton Login -->
+            <Button Content="Autentificare"
+                    Command="{Binding LoginCommand}"
+                    Background="#2196F3"
+                    Foreground="White"
+                    Height="35"
+                    Margin="0,10,0,0"/>
+
+            <!-- Separator -->
+            <Separator Margin="0,15,15,15" />
+
+            <!-- Înregistrare -->
+            <TextBlock Text="Nu ai cont? Creează unul mai jos:" 
+                       FontWeight="Bold" HorizontalAlignment="Center"/>
+
+            <!-- Email pentru înregistrare -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Email:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="RegisterEmailTextBox"
+                         Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Adresa de email"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Parolă pentru înregistrare -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Parolă:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="RegisterPasswordBox"
+                         Text="{Binding RegisterPassword, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Parolă"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Nume -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Nume:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="FirstNameTextBox"
+                         Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Prenume"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Prenume -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Prenume:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="LastNameTextBox"
+                         Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Nume"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Telefon -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Telefon:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="PhoneTextBox"
+                         Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Număr de telefon"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Adresa livrare -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Adresă:" Width="100" VerticalAlignment="Center"/>
+                <TextBox x:Name="AddressTextBox"
+                         Text="{Binding DeliveryAddress, UpdateSourceTrigger=PropertyChanged}"
+                         Tag="Adresa de livrare"
+                         BorderBrush="#AAAAAA"
+                         BorderThickness="1"
+                         Height="40"
+                         Padding="4,8"
+                         Width="250"/>
+            </StackPanel>
+
+            <!-- Buton Register -->
+            <Button Content="Creează cont"
+                    Command="{Binding RegisterCommand}"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    Height="40"
+                    HorizontalAlignment="Left"
+                    Width="120"
+                    Margin="0,10,0,0"/>
+
+            <!-- Mesaj eroare -->
+            <TextBlock x:Name="ErrorMessage"
+                       Text="{Binding ErrorMessage}"
+                       Foreground="Red"
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,0"
+                       Visibility="{Binding HasError, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </StackPanel>
+    </Grid>
+</Window>

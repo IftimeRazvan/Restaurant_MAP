@@ -110,12 +110,21 @@ namespace Restaurant.ViewModels
         public MenuViewModel()
         {
             LoadCategories();
+            LoadDishesAndMenus();
         }
 
         private void LoadCategories()
         {
             var rawCategories = categoryBL.GetAllCategories();
             Categories = new ObservableCollection<Category>(rawCategories);
+        }
+
+        private void LoadDishesAndMenus()
+        {
+            var allDishes = dishBL.GetAllDishes();
+            AllDishes = new ObservableCollection<Dish>(allDishes);
+            var allMenus = menuBL.GetAllMenus();
+            AllMenus = new ObservableCollection<Menu>(allMenus);
         }
 
         private void LoadDishesAndMenusBySelectedCategory()

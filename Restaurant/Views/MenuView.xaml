@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Restaurant.Converters"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Meniu Restaurant" Height="800" Width="1200">
     <Window.Resources>
         <local:BooleanToAvailabilityConverter x:Key="BooleanToAvailabilityConverter" />
@@ -12,7 +11,7 @@
         <DockPanel LastChildFill="True">
 
             <!-- Partea stângă - Căutare + Categorii -->
-            <StackPanel DockPanel.Dock="Left" Width="300" Background="#F5F5F5" Margin="0,0,10,0">
+            <StackPanel DockPanel.Dock="Left" Width="300" Margin="0,0,10,0">
 
                 <!-- Zona de căutare -->
                 <StackPanel Orientation="Vertical" Margin="10">
@@ -22,7 +21,7 @@
 
                     <!-- CheckBox pentru include/exclude termenul -->
                     <CheckBox Content="Include" 
-                              IsChecked="{Binding IncludeSearchTerm}" />
+                  IsChecked="{Binding IncludeSearchTerm}" />
 
                     <!-- Separator vizual -->
                     <Separator Margin="0,10,0,10" />
@@ -33,27 +32,30 @@
 
                     <!-- CheckBox pentru include/exclude alergenii -->
                     <CheckBox Content="Include" 
-                              IsChecked="{Binding IncludeAllergen}" />
-
-                    <!-- Separator vizual -->
-                    <Separator Margin="0,10,0,10" />
-
-                    <!-- Rezultatele căutării -->
+                  IsChecked="{Binding IncludeAllergen}" />
                 </StackPanel>
 
                 <!-- Lista de categorii -->
                 <ListBox ItemsSource="{Binding Categories}"
-                         SelectedItem="{Binding SelectedCategory}"
-                         Margin="10">
+             SelectedItem="{Binding SelectedCategory}"
+             Margin="10">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" 
-                                       Margin="10,5" 
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"/>
+                           Margin="10,5" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                <!-- Butonul Login/Register sub categorii -->
+                <Button Content="Login / Register"
+            Width="250"
+            Margin="10,0,10,10"
+            Padding="10,5"
+            HorizontalAlignment="Stretch"
+            />
             </StackPanel>
 
             <!-- Zona principală - Preparatele și Meniurile din categoria selectată -->
@@ -77,7 +79,6 @@
                                         CornerRadius="8"
                                         Padding="15"
                                         Margin="10"
-                                        Background="#FFFFFF"
                                         HorizontalAlignment="Stretch">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -125,7 +126,6 @@
                                         CornerRadius="8"
                                         Padding="15"
                                         Margin="10"
-                                        Background="#FAFAFA"
                                         HorizontalAlignment="Stretch">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
