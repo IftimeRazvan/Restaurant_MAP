@@ -6,14 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Restaurant.Models.EntityLayer;
+using System.Collections.ObjectModel;
 
 namespace Restaurant.Models.DataAccessLayer
 {
     public class MenuItemDAL
     {
-        public List<MenuItem> GetMenuItemsForMenu(int menuId)
+        public ObservableCollection<MenuItem> GetMenuItemsForMenu(int menuId)
         {
-            var items = new List<MenuItem>();
+            var items = new ObservableCollection<MenuItem>();
 
             using (SqlConnection conn = DALHelper.Connection)
             {
@@ -34,7 +35,8 @@ namespace Restaurant.Models.DataAccessLayer
                     {
                         MenuItemID = (int)reader["MenuItemId"],
                         MenuID = (int?)reader["MenuId"],
-                        DishID = (int?)reader["DishId"],
+                        DishID = (int)reader["DishId"],
+                        Quantity = quantity,
                         Dish = new Dish
                         {
                             Name = reader["Name"].ToString(),
@@ -43,6 +45,7 @@ namespace Restaurant.Models.DataAccessLayer
                         }
 
                     };
+                    menuItem.Dish.DishID = menuItem.DishID;
 
                     items.Add(menuItem);
                 }

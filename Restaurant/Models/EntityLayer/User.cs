@@ -14,7 +14,7 @@ namespace Restaurant.Models.EntityLayer
         private string email;
         private string phoneNumber;
         private string deliveryAddress;
-        private string passwordHash;
+        private string password;
         private bool isEmployee;
 
         public int UserID
@@ -77,12 +77,12 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
-        public string PasswordHash
+        public string Password
         {
-            get => passwordHash;
+            get => password;
             set
             {
-                passwordHash = value;
+                password = value;
                 NotifyPropertyChanged();
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Restaurant.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,19 +12,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Restaurant.ViewModels;
 
 namespace Restaurant.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for EmployeeView.xaml
     /// </summary>
-    public partial class LoginView : Window
+    public partial class EmployeeView : Window
     {
-        public LoginView()
+        public EmployeeView()
         {
             InitializeComponent();
-            DataContext = new LoginViewModel();
+            DataContext = new EmployeeVIewModel();
         }
     }
 }

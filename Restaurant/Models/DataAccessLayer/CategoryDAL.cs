@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Restaurant.Models.BusinessLogicLayer;
 
 namespace Restaurant.Models.DataAccessLayer
 {
@@ -36,6 +37,47 @@ namespace Restaurant.Models.DataAccessLayer
             }
 
             return categories;
+        }
+
+        public void InsertCategory(string name)
+        {
+            using (SqlConnection conn = DALHelper.Connection)
+            {
+                SqlCommand cmd = new SqlCommand("InsertCategory", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Name", name);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteCategory(int categoryId)
+        {
+            using (SqlConnection conn = DALHelper.Connection)
+            {
+                SqlCommand cmd = new SqlCommand("DeleteCategory", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateCategory(int categoryId, string newName)
+        {
+            using (SqlConnection conn = DALHelper.Connection)
+            {
+                SqlCommand cmd = new SqlCommand("UpdateCategory", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                cmd.Parameters.AddWithValue("@Name", newName);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+            }
         }
     }
 }

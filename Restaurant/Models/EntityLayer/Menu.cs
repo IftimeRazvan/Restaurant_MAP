@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Restaurant.Models.EntityLayer
         private string name;
         private string imageUrl;
         private int categoryID;
-        private List<MenuItem> items = new List<MenuItem>();
+        private ObservableCollection<MenuItem> items = new ObservableCollection<MenuItem>();
         private List<string> allergens = new List<string>();
 
         public int MenuID
@@ -55,14 +56,13 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
-        public List<MenuItem> Items
+        public ObservableCollection<MenuItem> Items
         {
             get => items;
             set
             {
                 items = value;
                 NotifyPropertyChanged();
-                //NotifyPropertyChanged(nameof(IsAvailable));
             }
         }
 
@@ -76,14 +76,7 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
-        public decimal CalculatedPrice => CalculatePrice();
-
-        private decimal CalculatePrice()
-        {
-            decimal total = Items?.Sum(i => i.Dish?.Price) ?? 0;
-            decimal discountPercentage = SettingsHelper.Discount_Menu_Percentage;
-            return total - (total * discountPercentage / 100);
-        }
+        public decimal CalculatedPrice { get; set; }
 
         public string ComponentDetails
         {
@@ -95,13 +88,6 @@ namespace Restaurant.Models.EntityLayer
 
         public string AllergensString => string.Join(", ", Allergens);
 
-        public bool IsAvailable
-        {
-            get
-            {
-                return Items.All(item => item.Dish != null && item.Dish.TotalQuantity >= item.Quantity);
-            }
-        }
-
+        public bool IsAvailable { get; set; }
     }
 }

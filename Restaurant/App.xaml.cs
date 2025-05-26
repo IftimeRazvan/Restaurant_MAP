@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Restaurant.Models.EntityLayer;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
@@ -9,6 +10,7 @@ namespace Restaurant
     /// </summary>
     public partial class App : Application
     {
+        public User CurrentUser { get; set; }= null;
     }
 
 }

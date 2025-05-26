@@ -2,163 +2,490 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Restaurant.Converters"
-        Title="Meniu Restaurant" Height="800" Width="1200">
+        Title="Meniu Restaurant" Height="800" Width="1200"
+        Background="#FFF6F9FC">
     <Window.Resources>
+        <!-- Converters -->
         <local:BooleanToAvailabilityConverter x:Key="BooleanToAvailabilityConverter" />
+        <local:BooleanToInvertedVisibilityConverter x:Key="BooleanToInvertedVisibilityConverter" />
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <!-- Culori personalizate din EmployeeView -->
+        <Color x:Key="PrimaryColor">#FF3E8EDE</Color>
+        <Color x:Key="AccentColor">#FF58C3B6</Color>
+        <Color x:Key="BackgroundColor">#FFF6F9FC</Color>
+        <Color x:Key="TextColor">#FF1E1E1E</Color>
+        <Color x:Key="HeaderColor">#FF2A2A2A</Color>
+
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
+        <SolidColorBrush x:Key="HeaderBrush" Color="{StaticResource HeaderColor}"/>
+
+        <!-- Stil pentru TabControl -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+        </Style>
+
+        <!-- Stil pentru TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Background="{TemplateBinding Background}">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Stil pentru Button -->
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="6,3"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                               BorderBrush="{TemplateBinding BorderBrush}" 
+                               BorderThickness="{TemplateBinding BorderThickness}" 
+                               CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Suprascrieri pentru butoane speciale -->
+        <Style x:Key="RemoveButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#F44336"/>
+            <Setter Property="BorderBrush" Value="DarkRed"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <Style x:Key="DecreaseButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="#FF9800"/>
+            <Setter Property="BorderBrush" Value="DarkOrange"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <Style x:Key="OrderButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <!-- ListBox style -->
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="#FFEFF4FA"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- Border style -->
+        <Style x:Key="ItemBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="1" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Text Headers -->
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="{StaticResource HeaderBrush}"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
     </Window.Resources>
 
-    <Grid Margin="10">
-        <DockPanel LastChildFill="True">
+    <Grid Margin="10" Background="{StaticResource BackgroundBrush}">
+        <TabControl>
+            <!-- Tab Meniu -->
+            <TabItem Header="Meniu">
+                <DockPanel LastChildFill="True">
 
-            <!-- Partea stângă - Căutare + Categorii -->
-            <StackPanel DockPanel.Dock="Left" Width="300" Margin="0,0,10,0">
+                    <!-- Partea stângă - Căutare + Categorii -->
+                    <StackPanel DockPanel.Dock="Left" Width="300" Margin="0,0,10,0">
 
-                <!-- Zona de căutare -->
-                <StackPanel Orientation="Vertical" Margin="10">
-                    <!-- Căutare după denumire -->
-                    <TextBlock Text="Name Search" FontWeight="Bold"/>
-                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+                        <!-- Zona de căutare -->
+                        <Border BorderBrush="{StaticResource PrimaryBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Padding="10" 
+                                Margin="10" 
+                                Background="White">
+                            <StackPanel Orientation="Vertical">
+                                <!-- Căutare după denumire -->
+                                <TextBlock Text="Name Search" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
+                                <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Width="250"
+                                         Margin="0,5,0,5" Padding="5" BorderBrush="{StaticResource AccentBrush}"/>
 
-                    <!-- CheckBox pentru include/exclude termenul -->
-                    <CheckBox Content="Include" 
-                  IsChecked="{Binding IncludeSearchTerm}" />
+                                <!-- CheckBox pentru include/exclude termenul -->
+                                <CheckBox Content="Include" IsChecked="{Binding IncludeSearchTerm}" 
+                                          Foreground="{StaticResource TextBrush}"/>
 
-                    <!-- Separator vizual -->
-                    <Separator Margin="0,10,0,10" />
+                                <!-- Separator vizual -->
+                                <Separator Margin="0,10,0,10" />
 
-                    <!-- Căutare după alergen -->
-                    <TextBlock Text="Allergen Search" FontWeight="Bold"/>
-                    <TextBox Text="{Binding AllergenQuery, UpdateSourceTrigger=PropertyChanged}" Width="250"/>
+                                <!-- Căutare după alergen -->
+                                <TextBlock Text="Allergen Search" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
+                                <TextBox Text="{Binding AllergenQuery, UpdateSourceTrigger=PropertyChanged}" Width="250"
+                                         Margin="0,5,0,5" Padding="5" BorderBrush="{StaticResource AccentBrush}"/>
 
-                    <!-- CheckBox pentru include/exclude alergenii -->
-                    <CheckBox Content="Include" 
-                  IsChecked="{Binding IncludeAllergen}" />
-                </StackPanel>
+                                <!-- CheckBox pentru include/exclude alergenii -->
+                                <CheckBox Content="Include" IsChecked="{Binding IncludeAllergen}" 
+                                          Foreground="{StaticResource TextBrush}"/>
+                            </StackPanel>
+                        </Border>
 
-                <!-- Lista de categorii -->
-                <ListBox ItemsSource="{Binding Categories}"
-             SelectedItem="{Binding SelectedCategory}"
-             Margin="10">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" 
-                           Margin="10,5" 
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                        <!-- Lista de categorii -->
+                        <Border BorderBrush="{StaticResource PrimaryBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Margin="10" 
+                                Background="White">
+                            <ListBox ItemsSource="{Binding Categories}"
+                                     SelectedItem="{Binding SelectedCategory}"
+                                     Margin="5"
+                                     Background="Transparent"
+                                     BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" 
+                                                  Margin="10,5" 
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Foreground="{StaticResource TextBrush}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
 
-                <!-- Butonul Login/Register sub categorii -->
-                <Button Content="Login / Register"
-            Width="250"
-            Margin="10,0,10,10"
-            Padding="10,5"
-            HorizontalAlignment="Stretch"
-            />
-            </StackPanel>
+                        <!-- Butonul Login/Register sub categorii -->
+                        <Button Content="Login / Register"
+                                Command="{Binding OpenLoginCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                Visibility="{Binding IsLoggedIn, Converter={StaticResource BooleanToInvertedVisibilityConverter}}"
+                                Width="250"
+                                Margin="10,0,10,10"
+                                Padding="10,5"
+                                HorizontalAlignment="Stretch"/>
+                    </StackPanel>
 
-            <!-- Zona principală - Preparatele și Meniurile din categoria selectată -->
-            <ScrollViewer>
-                <StackPanel>
+                    <!-- Zona principală - Preparatele și Meniurile din categoria selectată -->
+                    <ScrollViewer>
+                        <StackPanel>
 
-                    <!-- Afișare preparate -->
-                    <TextBlock Text="Preparate:" FontWeight="Bold" Margin="10,10,0,5"/>
+                            <!-- Afișare preparate -->
+                            <TextBlock Text="Preparate:" Style="{StaticResource SectionHeader}"/>
 
-                    <ItemsControl ItemsSource="{Binding AllDishes}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                            <ItemsControl ItemsSource="{Binding AllDishes}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="#DDD"
-                                        BorderThickness="1"
-                                        CornerRadius="8"
-                                        Padding="15"
-                                        Margin="10"
-                                        HorizontalAlignment="Stretch">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource ItemBorder}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                                        <!-- Informații despre preparat -->
-                                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
-                                            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding Price, StringFormat='Preț: {0:C}'}" Foreground="Green" FontSize="16"/>
-                                            <TextBlock Text="{Binding QuantityPerPortion, StringFormat='Gramaj: {0:g}g'}" FontStyle="Italic"/>
-                                            <TextBlock Text="{Binding AllergensString, StringFormat='Alergeni: {0}'}" Foreground="Red"/>
-                                            <TextBlock Text="{Binding IsAvailable,Converter={StaticResource BooleanToAvailabilityConverter}}" FontWeight="Bold"/>
-                                        </StackPanel>
+                                                <!-- Informații despre preparat -->
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                                                    <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
+                                                    <TextBlock Text="{Binding Price, StringFormat='Preț: {0:C}'}" Foreground="{StaticResource AccentBrush}" FontSize="16"/>
+                                                    <TextBlock Text="{Binding QuantityPerPortion, StringFormat='Gramaj: {0:g}g'}" FontStyle="Italic" Foreground="{StaticResource TextBrush}"/>
+                                                    <TextBlock Text="{Binding AllergensString, StringFormat='Alergeni: {0}'}" Foreground="Red"/>
+                                                    <TextBlock Text="{Binding IsAvailable, Converter={StaticResource BooleanToAvailabilityConverter}}" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                                                </StackPanel>
 
-                                        <!-- Imaginea produsului -->
-                                        <Image Grid.Column="1"
-                                               Source="{Binding ImageUrl}"
-                                               MaxWidth="120"
-                                               MaxHeight="120"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Top"
-                                               Margin="10,0,0,0"/>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                                                <!-- Imaginea produsului -->
+                                                <Border Grid.Column="1" 
+                                                        BorderBrush="{StaticResource AccentBrush}" 
+                                                        BorderThickness="1" 
+                                                        CornerRadius="4"
+                                                        Margin="10,0,0,0">
+                                                    <Image Source="{Binding ImageUrl}"
+                                                           MaxWidth="120"
+                                                           MaxHeight="120"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Top"
+                                                           Margin="5"/>
+                                                </Border>
 
-                    <!-- Afișare meniuri -->
-                    <TextBlock Text="Meniuri:" FontWeight="Bold" Margin="10,20,0,5"/>
+                                                <!-- Butonul de adăugare în coș -->
+                                                <Button Content="Adaugă în coș"
+                                                        Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        Visibility="{Binding DataContext.IsLoggedIn, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                        CommandParameter="{Binding}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Bottom"
+                                                        Margin="5"
+                                                        IsEnabled="{Binding IsAvailable}"
+                                                        Padding="5,3"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
-                    <ItemsControl ItemsSource="{Binding AllMenus}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                            <!-- Afișare meniuri -->
+                            <TextBlock Text="Meniuri:" Style="{StaticResource SectionHeader}"/>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="#AAA"
-                                        BorderThickness="1"
-                                        CornerRadius="8"
-                                        Padding="15"
-                                        Margin="10"
-                                        HorizontalAlignment="Stretch">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                            <ItemsControl ItemsSource="{Binding AllMenus}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
 
-                                        <!-- Informații meniu -->
-                                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
-                                            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding CalculatedPrice, StringFormat='Preț: {0:C}'}" Foreground="Blue" FontSize="16"/>
-                                            <TextBlock Text="{Binding ComponentDetails}" FontStyle="Italic"/>
-                                            <TextBlock Text="{Binding AllergensString, StringFormat='Alergeni: {0}'}" Foreground="Red"/>
-                                            <TextBlock Text="{Binding IsAvailable, Converter={StaticResource BooleanToAvailabilityConverter}}" FontWeight="Bold"/>
-                                        </StackPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource ItemBorder}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                                        <!-- Imagine meniu -->
-                                        <Image Grid.Column="1"
-                                               Source="{Binding ImageUrl}"
-                                               MaxWidth="120"
-                                               MaxHeight="120"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Top"
-                                               Margin="10,0,0,0"/>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                                                <!-- Informații meniu -->
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                                                    <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
+                                                    <TextBlock Text="{Binding CalculatedPrice, StringFormat='Preț: {0:C}'}" Foreground="{StaticResource PrimaryBrush}" FontSize="16"/>
+                                                    <TextBlock Text="{Binding ComponentDetails}" FontStyle="Italic" Foreground="{StaticResource TextBrush}"/>
+                                                    <TextBlock Text="{Binding AllergensString, StringFormat='Alergeni: {0}'}" Foreground="Red"/>
+                                                    <TextBlock Text="{Binding IsAvailable, Converter={StaticResource BooleanToAvailabilityConverter}}" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                                                </StackPanel>
 
-                </StackPanel>
-            </ScrollViewer>
+                                                <!-- Imagine meniu -->
+                                                <Border Grid.Column="1" 
+                                                        BorderBrush="{StaticResource AccentBrush}" 
+                                                        BorderThickness="1" 
+                                                        CornerRadius="4"
+                                                        Margin="10,0,0,0">
+                                                    <Image Source="{Binding ImageUrl}"
+                                                           MaxWidth="120"
+                                                           MaxHeight="120"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Top"
+                                                           Margin="5"/>
+                                                </Border>
 
-        </DockPanel>
+                                                <!-- Butonul de adăugare în coș -->
+                                                <Button Content="Adaugă în coș"
+                                                        Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Visibility="{Binding DataContext.IsLoggedIn, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Bottom"
+                                                        IsEnabled="{Binding IsAvailable}"
+                                                        Margin="5"
+                                                        Padding="5,3"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Partea dreaptă - Coșul de cumpărături -->
+                    <StackPanel DockPanel.Dock="Right" Width="300" Margin="10,0,0,0">
+                        <TextBlock Text="Coș de cumpărături" Style="{StaticResource SectionHeader}"/>
+
+                        <Border BorderBrush="{StaticResource PrimaryBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Margin="10" 
+                                Background="White">
+                            <ListBox ItemsSource="{Binding CartItems}" Margin="5" Background="Transparent" BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0 5" Background="#FFEFF4FA">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Informații articol -->
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Item.Name}" FontWeight="Bold" FontSize="16" Foreground="{StaticResource HeaderBrush}"/>
+                                                    <TextBlock Text="{Binding Quantity, StringFormat='Cantitate: {0}'}" Foreground="{StaticResource AccentBrush}" FontSize="14"/>
+                                                </StackPanel>
+
+                                                <!-- "-" -->
+                                                <Button Content="-"
+                                                    Command="{Binding DataContext.DecreaseCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                    CommandParameter="{Binding}"
+                                                    Grid.Column="1"
+                                                    Style="{StaticResource DecreaseButton}"
+                                                    Margin="5 0"
+                                                    FontWeight="Bold"/>
+                                                <!-- "X" -->
+                                                <Button Content="X"
+                                                    Command="{Binding DataContext.RemoveFromCartCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                    CommandParameter="{Binding}"
+                                                    Grid.Column="3"
+                                                    Style="{StaticResource RemoveButton}"
+                                                    Margin="5 0"
+                                                    FontWeight="Bold"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                        <Separator Margin="10"/>
+
+                        <Border BorderBrush="{StaticResource PrimaryBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Padding="15" 
+                                Margin="10" 
+                                Background="White">
+                            <StackPanel>
+                                <TextBlock Text="{Binding TotalCommandPrice, StringFormat='Total: {0:C}'}" FontSize="16" FontWeight="Bold" Margin="0,10" Foreground="{StaticResource HeaderBrush}"/>
+                                <Button Content="Plasează Comanda"
+                                    Command="{Binding PlaceOrderCommand}"
+                                    Style="{StaticResource OrderButton}"
+                                    Visibility="{Binding IsLoggedIn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Profil" Visibility="{Binding IsLoggedIn, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                <ScrollViewer>
+                    <StackPanel Margin="10">
+
+                        <!-- Lista tuturor comenzilor -->
+                        <TextBlock Text="Toate comenzile tale" Style="{StaticResource SectionHeader}"/>
+                        <Border BorderBrush="{StaticResource PrimaryBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Margin="10" 
+                                Background="White">
+                            <ListBox ItemsSource="{Binding AllUserOrders}" Margin="5" Background="Transparent" BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" Background="#FFEFF4FA">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding OrderDate, StringFormat='Data: {0:dd.MM.yyyy HH:mm}'}" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
+                                                <TextBlock Text="{Binding OrderCode, StringFormat='Cod: {0}'}" Foreground="{StaticResource PrimaryBrush}"/>
+                                                <TextBlock Text="{Binding Status, StringFormat='Stare: {0}'}" Foreground="{StaticResource TextBrush}"/>
+                                                <TextBlock Text="{Binding TotalPrice, StringFormat='Total: {0:C}'}" Foreground="{StaticResource AccentBrush}"/>
+                                                <TextBlock Text="{Binding EstimatedDeliveryTime, StringFormat='Estimare livrare: {0:t dd.MM}'}" Foreground="{StaticResource TextBrush}"/>
+
+                                                <!-- Produse din comandă -->
+                                                <ItemsControl ItemsSource="{Binding OrderDetails}" Margin="0,5,0,0">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                                <TextBlock Text="{Binding ItemName}" Margin="0,0,4,0" Foreground="{StaticResource TextBrush}"/>
+                                                                <TextBlock Text="x" Margin="0,0,4,0" Foreground="{StaticResource TextBrush}"/>
+                                                                <TextBlock Text="{Binding Quantity}" Margin="0,0,4,0" Foreground="{StaticResource TextBrush}"/>
+                                                                <TextBlock Text="buc." Foreground="{StaticResource TextBrush}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+
+                        <!-- Separator vizual -->
+                        <Separator Margin="10"/>
+
+                        <!-- Lista comenzilor active -->
+                        <TextBlock Text="Comenzi active" Style="{StaticResource SectionHeader}"/>
+                        <Border BorderBrush="{StaticResource PrimaryBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Margin="10" 
+                                Background="White">
+                            <ListBox ItemsSource="{Binding ActiveUserOrders}" Margin="5" Background="Transparent" BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" Background="#FFEFF4FA">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Cod comandă -->
+                                                <TextBlock Text="{Binding OrderCode}" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
+
+                                                <!-- Buton Anulează -->
+                                                <Button Content="Anulează"
+                                                        Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                        CommandParameter="{Binding}"
+                                                        Grid.Column="1"
+                                                        Style="{StaticResource RemoveButton}"
+                                                        Margin="10,0,0,0"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Width="80"
+                                                        Height="Auto"
+                                                        Visibility="{Binding CanBeCancelled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

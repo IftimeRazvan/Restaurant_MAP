@@ -31,5 +31,20 @@ namespace Restaurant.Models.BusinessLogicLayer
         {
             return menuDAL.GetAllMenus();
         }
+
+        public void UpdateMenu(Menu menu)
+        {
+            menuDAL.UpdateMenu(menu);
+        }
+
+        public void InsertMenu(Menu menu)
+        {
+            menuDAL.InsertMenu(menu);
+        }
+
+        public void DeleteMenu(int menuID)
+        {
+            menuDAL.DeleteMenu(menuID);
+        }
     }
 }

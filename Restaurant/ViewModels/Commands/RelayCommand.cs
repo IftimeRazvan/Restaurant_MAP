@@ -7,32 +7,10 @@ using System.Windows.Input;
 
 namespace Restaurant.ViewModels.Commands
 {
-    class RelayCommand<T> : ICommand
+    public class RelayCommand : ICommand
     {
-        private Action<T> commandTask;
-        private Predicate<T> canExecuteTask;
-
-        public RelayCommand(Action<T> workToDo)
-            : this(workToDo, DefaultCanExecute)
-        {
-            commandTask = workToDo;
-        }
-
-        public RelayCommand(Action<T> workToDo, Predicate<T> canExecute)
-        {
-            commandTask = workToDo;
-            canExecuteTask = canExecute;
-        }
-
-        private static bool DefaultCanExecute(T parameter)
-        {
-            return true;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return canExecuteTask != null && canExecuteTask((T)parameter);
-        }
+        private readonly Action<object> execute;
+        private readonly Func<object, bool> canExecute;
 
         public event EventHandler CanExecuteChanged
         {
@@ -40,16 +18,26 @@ namespace Restaurant.ViewModels.Commands
             {
                 CommandManager.RequerySuggested += value;
             }
-
             remove
             {
                 CommandManager.RequerySuggested -= value;
             }
         }
 
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        {
+            this.execute = execute;
+            this.canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return canExecute == null || canExecute(parameter);
+        }
+
         public void Execute(object parameter)
         {
-            commandTask((T)parameter);
+            execute(parameter);
         }
     }
 }

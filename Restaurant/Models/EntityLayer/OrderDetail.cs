@@ -13,6 +13,7 @@ namespace Restaurant.Models.EntityLayer
         private int? dishID;
         private int? menuID;
         private int quantity;
+        private string itemName;
 
         public int OrderDetailID
         {
@@ -60,6 +61,16 @@ namespace Restaurant.Models.EntityLayer
             set
             {
                 quantity = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string ItemName
+        {
+            get => itemName;
+            set
+            {
+                itemName = value;
                 NotifyPropertyChanged();
             }
         }

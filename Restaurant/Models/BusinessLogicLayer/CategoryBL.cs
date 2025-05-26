@@ -16,5 +16,21 @@ namespace Restaurant.Models.BusinessLogicLayer
         {
             return categoryDAL.GetAllCategories();
         }
+
+
+        public void InsertCategory(string name)
+        {
+            categoryDAL.InsertCategory(name);
+        }
+
+        public void DeleteCategory(int categoryid)
+        {
+            categoryDAL.DeleteCategory(categoryid);
+        }
+
+        public void UpdateCategory(int categoryId, string newName)
+        {
+            categoryDAL.UpdateCategory(categoryId, newName);
+        }
     }
 }

@@ -75,5 +75,18 @@ namespace Restaurant.Models.EntityLayer
                 NotifyPropertyChanged();
             }
         }
+
+        private List<OrderDetail> orderDetails = new List<OrderDetail>();
+        public List<OrderDetail> OrderDetails
+        {
+            get => orderDetails;
+            set
+            {
+                orderDetails = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool CanBeCancelled => Status == "Inregistrata" || Status == "Se pregateste";
     }
 }

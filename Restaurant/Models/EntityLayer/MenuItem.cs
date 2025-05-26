@@ -10,7 +10,7 @@ namespace Restaurant.Models.EntityLayer
     {
         private int menuItemID;
         private int? menuID;
-        private int? dishID;
+        private int dishID;
         private decimal quantity;
 
         public int MenuItemID
@@ -33,7 +33,7 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
-        public int? DishID
+        public int DishID
         {
             get => dishID;
             set
