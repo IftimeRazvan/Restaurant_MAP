@@ -298,7 +298,7 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border BorderBrush="#E0E0E0" BorderThickness="1" Padding="15" Margin="0,5" CornerRadius="6" 
-                                                Background="#FFFFFF" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollContentPresenter}}}">
+                            Background="#FFFFFF" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollContentPresenter}}}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -315,8 +315,8 @@
 
                                                         <!-- Order Code and Date -->
                                                         <StackPanel Grid.Column="0">
-                                                            <TextBlock Text="{Binding OrderCode}" FontWeight="Bold" FontSize="16"/>
-                                                            <TextBlock Text="{Binding OrderDate, StringFormat='Data: {0:dd.MM.yyyy HH:mm}'}" Foreground="#757575"/>
+                                                            <TextBlock Text="{Binding OrderCode}" FontWeight="Bold" FontSize="16" Foreground="Black"/>
+                                                            <TextBlock Text="{Binding OrderDate, StringFormat='Data: {0:dd.MM.yyyy HH:mm}'}" Foreground="Black"/>
                                                         </StackPanel>
 
                                                         <!-- Status Badge -->
@@ -328,9 +328,20 @@
                                                     <!-- Customer Info -->
                                                     <Border Background="#F5F5F5" CornerRadius="4" Padding="10" Margin="0,10,0,10">
                                                         <StackPanel>
-                                                            <TextBlock Text="{Binding CustomerName, StringFormat='Client: {0}'}" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{Binding DeliveryAddress, StringFormat='Adresa livrare: {0}'}"/>
-                                                            <TextBlock Text="{Binding EstimatedDeliveryTime, StringFormat='Estimare livrare: {0:t dd.MM}'}" Foreground="#757575"/>
+                                                            <TextBlock Text="{Binding CustomerName, StringFormat='Client: {0}'}" Foreground="Black" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding CustomerPhone, StringFormat='Telefon: {0}'}" Foreground="Black"/>
+                                                            <TextBlock Text="{Binding DeliveryAddress, StringFormat='Adresa livrare: {0}'}" Foreground="Black"/>
+                                                            <TextBlock  Text="{Binding EstimatedDeliveryTime, StringFormat='Estimare livrare: {0:t dd.MM}'}" Foreground="Black"/>
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <!-- Price Information -->
+                                                    <Border Background="#E8F5E8" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding TotalPrice, StringFormat='Cost total: {0:C}'}" 
+                                                   FontWeight="Bold" FontSize="16" Foreground="#2E7D32"/>
+                                                            <TextBlock Text="(Include livrare și reduceri)" 
+                                                   FontStyle="Italic" FontSize="12" Foreground="Black"/>
                                                         </StackPanel>
                                                     </Border>
 
@@ -344,11 +355,11 @@
                                                                         <ColumnDefinition Width="*"/>
                                                                         <ColumnDefinition Width="Auto"/>
                                                                     </Grid.ColumnDefinitions>
-                                                                    <TextBlock Text="{Binding ItemName}" Grid.Column="0"/>
+                                                                    <TextBlock Text="{Binding ItemName}" Foreground="Black" Grid.Column="0"/>
                                                                     <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                                                        <TextBlock Text="x" Margin="0,0,4,0"/>
-                                                                        <TextBlock Text="{Binding Quantity}" FontWeight="SemiBold" Margin="0,0,4,0"/>
-                                                                        <TextBlock Text="buc."/>
+                                                                        <TextBlock Text="x" Foreground="Black" Margin="0,0,4,0"/>
+                                                                        <TextBlock Text="{Binding Quantity}" Foreground="Black" FontWeight="SemiBold" Margin="0,0,4,0"/>
+                                                                        <TextBlock Text="buc." Foreground="Black"/>
                                                                     </StackPanel>
                                                                 </Grid>
                                                             </DataTemplate>

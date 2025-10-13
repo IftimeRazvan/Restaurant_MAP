@@ -13,18 +13,14 @@ namespace Restaurant.Models.BusinessLogicLayer
         private readonly OrderDAL orderDAL = new OrderDAL();
         public void PlaceOrder(Order order, List<ShoppingCartItem<object>> cartItems)
         {
-            // Generează cod unic
             order.OrderCode = GenerateUniqueOrderCode();
 
             order.EstimatedDeliveryTime = DateTime.Now.AddMinutes(60);
 
-            // Salvează comanda
             orderDAL.AddOrder(order);
 
-            // Obține ID-ul ultimei comenzi
             int orderId = orderDAL.GetLastOrderId();
 
-            // Salvează fiecare produs din coș
             foreach (var item in cartItems)
             {
                 if (item.Item is Dish dish)
@@ -59,6 +55,43 @@ namespace Restaurant.Models.BusinessLogicLayer
                 }
             }
         }
+
+        public decimal GetOrderBasePrice(int orderId)
+        {
+            return orderDAL.GetOrderBasePrice(orderId);
+        }
+
+        public decimal CalculateOrderTotal(int orderId)
+        {
+            decimal basePrice = GetOrderBasePrice(orderId);
+
+            decimal finalPrice = ApplyDiscounts(basePrice, orderId);
+
+            finalPrice = AddDeliveryCost(finalPrice);
+
+            return finalPrice;
+        }
+
+        private decimal AddDeliveryCost(decimal price)
+        {
+            if (price < SettingsHelper.Free_Delivery_Threshold)
+            {
+                return price + SettingsHelper.Delivery_Cost;
+            }
+
+            return price;
+        }
+
+        private decimal ApplyDiscounts(decimal basePrice, int orderId)
+        {
+            if (basePrice >= SettingsHelper.Minimum_Order_For_Discount)
+            {
+                return basePrice * (1 - SettingsHelper.Discount_Percentage / 100);
+            }
+
+            return basePrice;
+        }
+
         private string GenerateUniqueOrderCode()
         {
             return Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(); // Ex: A1B2C3D4

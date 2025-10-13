@@ -26,7 +26,6 @@ namespace Restaurant
         public static decimal Discount_Percentage => GetDecimalSetting("Discount_Percentage");
 
 
-        // Metode ajutătoare pentru citirea valorilor
         private static decimal GetDecimalSetting(string key)
         {
             string value = ConfigurationManager.AppSettings[key];

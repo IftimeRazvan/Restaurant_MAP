@@ -122,6 +122,29 @@ namespace Restaurant.Models.DataAccessLayer
             }
         }
 
+        public decimal GetOrderBasePrice(int orderId)
+        {
+            using (SqlConnection connection = DALHelper.Connection)
+            {
+                SqlCommand command = new SqlCommand("GetOrderBasePrice", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@OrderID", orderId);
+
+                SqlParameter basePriceParam = new SqlParameter("@BasePrice", SqlDbType.Decimal);
+                basePriceParam.Direction = ParameterDirection.Output;
+                basePriceParam.Precision = 18;
+                basePriceParam.Scale = 2;
+                command.Parameters.Add(basePriceParam);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+
+                decimal basePrice = Convert.ToDecimal(basePriceParam.Value);
+                return basePrice;
+            }
+        }
+
         public List<Order> GetOrdersByUserId(int userId)
         {
             var orders = new List<Order>();
@@ -194,7 +217,7 @@ namespace Restaurant.Models.DataAccessLayer
 
             using (SqlConnection connection = DALHelper.Connection)
             {
-                SqlCommand command = new SqlCommand("GetAllOrders", connection);
+                SqlCommand command = new SqlCommand("GetAllOrdersWithCustomerInfo", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
@@ -210,6 +233,9 @@ namespace Restaurant.Models.DataAccessLayer
                         Status = reader["Status"].ToString(),
                         OrderCode = reader["OrderCode"].ToString(),
                         EstimatedDeliveryTime = reader["EstimatedDeliveryTime"] as DateTime?,
+                        CustomerName = $"{reader["FirstName"]} {reader["LastName"]}",
+                        CustomerPhone = reader["PhoneNumber"]?.ToString(),
+                        DeliveryAddress = reader["DeliveryAddress"]?.ToString()
                     };
                     order.OrderDetails = GetOrderDetails(order.OrderID);
                     orders.Add(order);
@@ -227,7 +253,7 @@ namespace Restaurant.Models.DataAccessLayer
 
             using (SqlConnection connection = DALHelper.Connection)
             {
-                SqlCommand command = new SqlCommand("GetActiveOrders", connection);
+                SqlCommand command = new SqlCommand("GetActiveOrdersWithCustomerInfo", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
@@ -243,6 +269,9 @@ namespace Restaurant.Models.DataAccessLayer
                         Status = reader["Status"].ToString(),
                         OrderCode = reader["OrderCode"].ToString(),
                         EstimatedDeliveryTime = reader["EstimatedDeliveryTime"] as DateTime?,
+                        CustomerName = $"{reader["FirstName"]} {reader["LastName"]}",
+                        CustomerPhone = reader["PhoneNumber"]?.ToString(),
+                        DeliveryAddress = reader["DeliveryAddress"]?.ToString()
                     };
                     order.OrderDetails = GetOrderDetails(order.OrderID);
                     orders.Add(order);

@@ -14,6 +14,19 @@ namespace Restaurant.Models.EntityLayer
         private DateTime orderDate;
         private DateTime? estimatedDeliveryTime;
         private string status;
+        private decimal totalPrice;
+
+
+
+        public decimal TotalPrice
+        {
+            get =>totalPrice;
+            set
+            {
+                totalPrice = value;
+                NotifyPropertyChanged();
+            }
+        }
 
 
         public int OrderID
@@ -56,6 +69,39 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
+        private string _customerName;
+        public string CustomerName
+        {
+            get { return _customerName; }
+            set
+            {
+                _customerName = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _customerPhone;
+        public string CustomerPhone
+        {
+            get { return _customerPhone; }
+            set
+            {
+                _customerPhone = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _deliveryAddress;
+        public string DeliveryAddress
+        {
+            get { return _deliveryAddress; }
+            set
+            {
+                _deliveryAddress = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public DateTime? EstimatedDeliveryTime
         {
             get => estimatedDeliveryTime;
@@ -87,6 +133,6 @@ namespace Restaurant.Models.EntityLayer
             }
         }
 
-        public bool CanBeCancelled => Status == "Inregistrata" || Status == "Se pregateste";
+        public bool CanBeCancelled => Status == "Inregistrata" || Status == "Se pregateste" || Status == "a plecat la client";
     }
 }

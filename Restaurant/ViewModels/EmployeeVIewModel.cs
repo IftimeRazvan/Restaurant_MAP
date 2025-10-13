@@ -282,7 +282,6 @@ namespace Restaurant.ViewModels
         {
             dishBL.DeleteDish(SelectedDish.DishID);
             LoadCatalog();
-            //LoadLowStock();
         }
 
 
@@ -403,6 +402,10 @@ namespace Restaurant.ViewModels
         private void LoadAllOrders(object param = null)
         {
             var orders = orderBL.GetAllOrders();
+            foreach (var order in orders)
+            {
+                order.TotalPrice = orderBL.CalculateOrderTotal(order.OrderID);
+            }
             DisplayedOrders = new ObservableCollection<Order>(
                 orders.OrderByDescending(o => o.OrderDate)
             );
@@ -421,7 +424,12 @@ namespace Restaurant.ViewModels
 
         private void LoadActiveOrders(object param = null)
         {
-            var orders = orderBL.GetActiveOrders(); 
+            var orders = orderBL.GetActiveOrders();
+
+            foreach (var order in orders)
+            {
+                order.TotalPrice = orderBL.CalculateOrderTotal(order.OrderID);
+            }
             DisplayedOrders = new ObservableCollection<Order>(
                 orders.OrderByDescending(o => o.OrderDate)
             );

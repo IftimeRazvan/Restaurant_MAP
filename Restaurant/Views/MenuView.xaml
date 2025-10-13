@@ -407,35 +407,79 @@
                         <!-- Lista tuturor comenzilor -->
                         <TextBlock Text="Toate comenzile tale" Style="{StaticResource SectionHeader}"/>
                         <Border BorderBrush="{StaticResource PrimaryBrush}" 
-                                BorderThickness="1" 
-                                CornerRadius="8" 
-                                Margin="10" 
-                                Background="White">
+        BorderThickness="1" 
+        CornerRadius="8" 
+        Margin="10" 
+        Background="White">
                             <ListBox ItemsSource="{Binding AllUserOrders}" Margin="5" Background="Transparent" BorderThickness="0">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border BorderBrush="{StaticResource PrimaryBrush}" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" Background="#FFEFF4FA">
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding OrderDate, StringFormat='Data: {0:dd.MM.yyyy HH:mm}'}" FontWeight="Bold" Foreground="{StaticResource HeaderBrush}"/>
-                                                <TextBlock Text="{Binding OrderCode, StringFormat='Cod: {0}'}" Foreground="{StaticResource PrimaryBrush}"/>
-                                                <TextBlock Text="{Binding Status, StringFormat='Stare: {0}'}" Foreground="{StaticResource TextBrush}"/>
-                                                <TextBlock Text="{Binding TotalPrice, StringFormat='Total: {0:C}'}" Foreground="{StaticResource AccentBrush}"/>
-                                                <TextBlock Text="{Binding EstimatedDeliveryTime, StringFormat='Estimare livrare: {0:t dd.MM}'}" Foreground="{StaticResource TextBrush}"/>
+                                        <Border BorderBrush="#E0E0E0" BorderThickness="1" Padding="15" Margin="0,5" CornerRadius="6" 
+                        Background="#FFFFFF" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollContentPresenter}}}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
 
-                                                <!-- Produse din comandă -->
-                                                <ItemsControl ItemsSource="{Binding OrderDetails}" Margin="0,5,0,0">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal" Margin="0,2">
-                                                                <TextBlock Text="{Binding ItemName}" Margin="0,0,4,0" Foreground="{StaticResource TextBrush}"/>
-                                                                <TextBlock Text="x" Margin="0,0,4,0" Foreground="{StaticResource TextBrush}"/>
-                                                                <TextBlock Text="{Binding Quantity}" Margin="0,0,4,0" Foreground="{StaticResource TextBrush}"/>
-                                                                <TextBlock Text="buc." Foreground="{StaticResource TextBrush}"/>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </StackPanel>
+                                                <!-- Order Details -->
+                                                <StackPanel Grid.Column="0">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Order Code and Date -->
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Text="{Binding OrderCode}" FontWeight="Bold" FontSize="16" Foreground="Black"/>
+                                                            <TextBlock Text="{Binding OrderDate, StringFormat='Data: {0:dd.MM.yyyy HH:mm}'}" FontWeight="Bold" Foreground="Black"/>
+                                                        </StackPanel>
+
+                                                        <!-- Status Badge -->
+                                                        <Border Grid.Column="1" Background="#E3F2FD" CornerRadius="4" Padding="8,4">
+                                                            <TextBlock Text="{Binding Status}" FontWeight="SemiBold" Foreground="#1976D2"/>
+                                                        </Border>
+                                                    </Grid>
+
+                                                    <!-- Delivery Time Info -->
+                                                    <Border Background="#F5F5F5" CornerRadius="4" Padding="10" Margin="0,10,0,10">
+                                                        <TextBlock Text="{Binding EstimatedDeliveryTime, StringFormat='Estimare livrare: {0:t dd.MM}'}" 
+                                          Foreground="Black" FontWeight="SemiBold"/>
+                                                    </Border>
+
+                                                    <!-- Price Information -->
+                                                    <Border Background="#E8F5E8" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding TotalPrice, StringFormat='Total: {0:C}'}" 
+                                              FontWeight="Bold" FontSize="16" Foreground="#2E7D32"/>
+                                                            <TextBlock Text="(Include livrare și reduceri)" 
+                                              FontStyle="Italic" FontSize="12" Foreground="Black" FontWeight="Bold"/>
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <!-- Order Items -->
+                                                    <TextBlock Text="Produse comandate:" FontWeight="SemiBold" Margin="0,0,0,5" Foreground="Black"/>
+                                                    <ItemsControl ItemsSource="{Binding OrderDetails}" Margin="10,0,0,10">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid Margin="0,2">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <TextBlock Text="{Binding ItemName}" Foreground="Black" Grid.Column="0" FontWeight="Bold"/>
+                                                                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                                        <TextBlock Text="x" FontWeight="Bold" Foreground="Black" Margin="0,0,4,0"/>
+                                                                        <TextBlock Text="{Binding Quantity}" Foreground="Black" FontWeight="Bold" Margin="0,0,4,0"/>
+                                                                        <TextBlock Text="buc." FontWeight="Bold" Foreground="Black"/>
+                                                                    </StackPanel>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </Grid>
                                         </Border>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

@@ -164,10 +164,8 @@ namespace Restaurant.ViewModels
             CartItems = new ObservableCollection<ShoppingCartItem<object>>(items);
             decimal subtotal = items.Sum(i => GetItemPrice(i.Item) * i.Quantity);
 
-            // Aplică reducerea (dacă se îndeplinește condiția)
             decimal finalPrice = ApplyDiscounts(subtotal);
 
-            // Adaugă livrarea dacă nu e gratuită
             finalPrice = AddDeliveryCost(finalPrice);
 
             TotalCommandPrice = finalPrice;
@@ -226,7 +224,6 @@ namespace Restaurant.ViewModels
                 return;
             }
 
-            // Creează comanda
             var order = new Order
             {
                 UserID = user.UserID,
@@ -492,6 +489,11 @@ namespace Restaurant.ViewModels
             int userId = ((App)Application.Current).CurrentUser.UserID;
 
             var orders = orderBL.GetOrdersByUserId(userId);
+            foreach (var order in orders)
+            {
+                order.TotalPrice = orderBL.CalculateOrderTotal(order.OrderID);
+            }
+
             AllUserOrders = new ObservableCollection<Order>(orders);
 
             ActiveUserOrders = new ObservableCollection<Order>(
